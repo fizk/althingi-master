@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+
+    source:
+        ports:
+            - 8082:80
+
+    source-db:
+        ports:
+            - 3306:3306
+
+    store:
+        ports:
+            - 8083:8080
+
+    store-db:
+        ports:
+            - 27017:27017
+
+    client:
+        ports:
+            - 80:80
+
+    server:
+        ports:
+            - 8084:3000
+
+    # messages:
+
+    queue:
+        ports:
+            - 5672:5672
+            - 15672:15672
+
+    # aggregator:
+
+    # aggregator-cache-consumer:
+
+    # aggregator-cache-provider:
+
+    # thumbor:
+
+    elasticsearch:
+        ports:
+            - 9200:9200
+
+    # kibana:
+
+    # metricbeat:
+
+    # filebeat:
+
+    # logstash:
+
+    # search-init:

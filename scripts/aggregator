@@ -1,0 +1,11 @@
+#!/bin/sh
+BASEDIR=$(dirname $0)
+cd $BASEDIR/..
+
+echo "Updating Aggregator to tag: $1";
+
+docker rm $(docker ps -aq -f "status=exited")
+docker rmi $(docker images "einarvalur/althingi-aggregator" -aq)
+docker pull einarvalur/althingi-aggregator:$1
+
+echo "Aggregator image up-to-date: $1";

@@ -1,0 +1,392 @@
+version: '3'
+
+services:
+
+#
+#   Systems
+#
+#
+#
+#
+    source:
+        container_name: althingi-source
+        image: einarvalur/althingi-source:latest
+        labels:
+            - althingi_service=source
+        restart: on-failure
+        environment:
+            - DB_HOST=source-db
+            - DB_PORT=3306
+            - DB_NAME=althingi
+            - DB_USER=root
+            - DB_PASSWORD=example
+            - LOG_PATH=php://stdout
+            - BROKER=amqp
+            - BROKER_HOST=queue
+            - BROKER_PORT=5672
+            - BROKER_USER=admin
+            - BROKER_PASSWORD=Admin@123
+            - BROKER_VHOST=/
+            - QUEUE_FORCED=false
+            # - DOCUMENT_SERVER=
+            # - DOCUMENT_DEFINITION=
+            # - INDEXER_STALL_TIME=
+        networks:
+            - main-althingi-networks
+        depends_on:
+            # - queue
+            - source-db
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+    source-db:
+        container_name: althingi-source-db
+        image: einarvalur/althingi-source-db:latest
+        volumes:
+            - source-db-volume:/var/lib/mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        networks:
+            - main-althingi-networks
+        environment:
+            MYSQL_ROOT_PASSWORD: example
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+    store:
+        container_name: althingi-store
+        image: einarvalur/althingi-store:latest
+        labels:
+            - althingi_service=store
+        restart: on-failure
+        environment:
+            - STORE_DB_USER=root
+            - STORE_DB_PASSWORD=example
+            - STORE_DB_HOST=store-db
+        networks:
+            - main-althingi-networks
+        depends_on:
+            - store-db
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+    store-db:
+        container_name: althingi-store-db
+        image: mongo:4.4.6
+        restart: always
+        volumes:
+            - store-db-volume:/data/db
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=root
+            - MONGO_INITDB_ROOT_PASSWORD=example
+        networks:
+            - main-althingi-networks
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+    client:
+        container_name: althingi-client
+        image: einarvalur/althingi-client:latest
+        labels:
+            - co.elastic.logs/module=apache2
+            - co.elastic.logs/fileset.stdout=access
+            - co.elastic.logs/fileset.stderr=error
+            - co.elastic.metrics/module=apache
+            - co.elastic.metrics/metricsets=status
+            - co.elastic.metrics/hosts='$${data.host}:$${data.port}'
+        restart: on-failure
+        ports:
+            - 80:80
+        networks:
+            - main-althingi-networks
+        depends_on:
+            - server
+            - thumbor
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+    server:
+        container_name: althingi-server
+        image: einarvalur/althingi-server:latest
+        labels:
+            - althingi_service=server
+        restart: on-failure
+        environment:
+            - STORE_URL=http://store:8080
+            - PORT=3000
+        networks:
+            - main-althingi-networks
+        depends_on:
+            - store
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+    messages:
+        container_name: althingi-messages
+        image: einarvalur/althingi-messages:latest
+        labels:
+            - althingi_service=messages
+        restart: on-failure
+        environment:
+            - QUEUE_HOST=queue
+            - QUEUE_USER=admin
+            - QUEUE_PASSWORD=Admin@123
+            - SOURCE_HOST=http://source:80
+            - STORAGE_HOST=http://store:8080
+            - SEARCH_HOST=http://search:8080
+        networks:
+            - main-althingi-networks
+        depends_on:
+            - queue
+        command: bash -c "/wait-for-it.sh queue:5672 -t 80 -- echo \"RabbitMQ up\" && deno run --allow-net --allow-env main.ts"
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+    queue:
+        container_name: althingi-messages-queue
+        image: rabbitmq:3.8.16-management-alpine
+        hostname: rabbit1
+        restart: on-failure
+        networks:
+            - main-althingi-networks
+        environment:
+            - RABBITMQ_ERLANG_COOKIE="jasdfg87asdv8cxv6DUv"
+            - RABBITMQ_NODENAME=rabbit1
+            - RABBITMQ_DEFAULT_USER=${ENV_QUEUE_USER:-admin}
+            - RABBITMQ_DEFAULT_PASS=${ENV_QUEUE_PASSWORD:-Admin@123}
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+    aggregator:
+        container_name: althingi-aggregator
+        image: einarvalur/althingi-aggregator:latest
+        labels:
+            - althingi_service=aggregator
+        restart: "no"
+        environment:
+            - ENVIRONMENT=PRODUCTION
+            - CONSUMER_CACHE_TYPE=memory
+            - CONSUMER_CACHE_HOST=aggregator-cache-consumer
+            - CONSUMER_CACHE_PORT=6379
+
+            - PROVIDER_CACHE_TYPE=memory
+            - PROVIDER_CACHE_HOST=aggregator-cache-provider
+            - PROVIDER_CACHE_PORT=6379
+
+            - AGGREGATOR_CONSUMER_SCHEMA=http
+            - AGGREGATOR_CONSUMER_HOST=source
+            - AGGREGATOR_CONSUMER_PORT=80
+        networks:
+            - main-althingi-networks
+        depends_on:
+            - aggregator-cache-consumer
+            - aggregator-cache-provider
+            - source
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+    aggregator-cache-consumer:
+        container_name: althingi-aggregator-cache-consumer
+        image: redis:4.0.11
+        restart: on-failure
+        networks:
+            - main-althingi-networks
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+    aggregator-cache-provider:
+        container_name: althingi-aggregator-cache-provider
+        image: redis:4.0.11
+        restart: on-failure
+        networks:
+            - main-althingi-networks
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+    thumbor:
+        container_name: althingi-image-server
+        image: minimalcompact/thumbor:6.7.5
+        restart: on-failure
+        networks:
+            - main-althingi-networks
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+#
+#   Logging and monitoring
+#
+#
+#
+#
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.13.2
+        container_name: althingi-logger-elasticsearch
+        restart: on-failure
+        environment:
+            - bootstrap.memory_lock=true
+            - discovery.type=single-node
+            - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+        volumes:
+            - elasticsearch-monitor-volume:/usr/share/elasticsearch/data
+        networks:
+            - main-althingi-networks
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+    kibana:
+        image: docker.elastic.co/kibana/kibana:7.13.2
+        container_name: althingi-logger-kibana
+        restart: on-failure
+        environment:
+            ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+        ports:
+            - 8081:5601
+        networks:
+            - main-althingi-networks
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+    metricbeat:
+        image: einarvalur/althingi-monitor-metricbeat:latest
+        container_name: althingi-logger-metricbeat
+        restart: on-failure
+        user: root
+        depends_on:
+            - elasticsearch
+            - kibana
+        networks:
+            - main-althingi-networks
+        environment:
+            - "WAIT_FOR_HOSTS=elasticsearch:9200 kibana:5601"
+            - "HOST_ELASTICSEARCH=elasticsearch:9200"
+            - "HOST_KIBANA=kibana:5601"
+            - ELASTICSEARCH_HOSTS=elasticsearch:9200
+            # - ELASTICSEARCH_USERNAME
+            # - ELASTICSEARCH_PASSWORD
+            - MYSQL_HOST=source-db
+            - MYSQL_USER=root
+            - MYSQL_PASSWORD=example
+            - RABBITMQ_USER=admin
+            - RABBITMQ_PASSWORD=Admin@123
+            - MONGODB_USER=root
+            - MONGODB_PASSWORD=example
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+    filebeat:
+        image: einarvalur/althingi-monitor-filebeat:latest
+        container_name: althingi-logger-filebeat
+        restart: on-failure
+        user: root
+        environment:
+            - -strict.perms=false
+        networks:
+            - main-althingi-networks
+        volumes:
+            - /var/lib/docker/containers:/var/lib/docker/containers:ro
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+    logstash:
+        image: einarvalur/althingi-monitor-logstash:latest
+        container_name: althingi-logger-logstash
+        restart: on-failure
+        user: root
+        environment:
+            - ELASTICSEARCH_HOSTS=elasticsearch:9200
+        networks:
+            - main-althingi-networks
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+    search-init:
+        image: einarvalur/althingi-search-init:latest
+        container_name: althingi-logger-search-init
+        restart: on-failure
+        user: root
+        environment:
+            - MONITOR_ES=elasticsearch:9200
+        networks:
+            - main-althingi-networks
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "5"
+
+#
+#   Volumes and network
+#
+#
+#
+#
+volumes:
+    source-db-volume:
+        external: true
+    store-db-volume:
+        external: true
+    elasticsearch-monitor-volume:
+        external: true
+
+networks:
+    main-althingi-networks:
+        driver: bridge
+        name: main-althingi-networks
