@@ -21,7 +21,7 @@ services:
             - DB_USER=root
             - DB_PASSWORD=example
             - LOG_PATH=php://stdout
-            - BROKER=amqp
+            - BROKER=none
             - BROKER_HOST=queue
             - BROKER_PORT=5672
             - BROKER_USER=admin
@@ -34,7 +34,7 @@ services:
         networks:
             - main-althingi-networks
         depends_on:
-            # - queue
+            # - kafka
             - source-db
         logging:
             driver: "json-file"
@@ -81,7 +81,7 @@ services:
 
     store-db:
         container_name: althingi-store-db
-        image: mongo:4.4.6
+        image: mongo:5.0.6-focal
         restart: always
         volumes:
             - store-db-volume:/data/db
@@ -127,7 +127,7 @@ services:
             - althingi_service=server
         restart: on-failure
         environment:
-            - STORE_URL=http://store:8080
+            - STORE_URL=http://store:80
             - PORT=3000
         networks:
             - main-althingi-networks
@@ -139,47 +139,46 @@ services:
                 max-size: "200k"
                 max-file: "5"
 
-    messages:
-        container_name: althingi-messages
-        image: einarvalur/althingi-messages:latest
+    messages-store:
+        container_name: althingi-messages-store
+        image: einarvalur/althingi-messages-store:latest
         labels:
-            - althingi_service=messages
-        restart: on-failure
+            - althingi_service=messages  
         environment:
-            - QUEUE_HOST=queue
-            - QUEUE_USER=admin
-            - QUEUE_PASSWORD=Admin@123
-            - SOURCE_HOST=http://source:80
-            - STORAGE_HOST=http://store:8080
-            - SEARCH_HOST=http://search:8080
+            - QUEUE_HOST=kafka
+            - QUEUE_PORT=9092
+            - SOURCE_PATH=http://source:80
+            - STORE_PATH=http://store:80    
         networks:
-            - main-althingi-networks
-        depends_on:
-            - queue
-        command: bash -c "/wait-for-it.sh queue:5672 -t 80 -- echo \"RabbitMQ up\" && deno run --allow-net --allow-env main.ts"
+            - main-althingi-networks  
         logging:
             driver: "json-file"
             options:
                 max-size: "200k"
                 max-file: "5"
 
-    queue:
-        container_name: althingi-messages-queue
-        image: rabbitmq:3.8.16-management-alpine
-        hostname: rabbit1
-        restart: on-failure
+
+    zookeeper:
+        image: wurstmeister/zookeeper
+        restart: unless-stopped
+        ports:
+            - "2181:2181"
         networks:
             - main-althingi-networks
+
+    kafka:
+        image: wurstmeister/kafka:2.13-2.8.1
+        restart: unless-stopped
+        ports:
+            - "9092"
         environment:
-            - RABBITMQ_ERLANG_COOKIE="jasdfg87asdv8cxv6DUv"
-            - RABBITMQ_NODENAME=rabbit1
-            - RABBITMQ_DEFAULT_USER=${ENV_QUEUE_USER:-admin}
-            - RABBITMQ_DEFAULT_PASS=${ENV_QUEUE_PASSWORD:-Admin@123}
-        logging:
-            driver: "json-file"
-            options:
-                max-size: "200k"
-                max-file: "5"
+            DOCKER_API_VERSION: 1.22
+            KAFKA_ADVERTISED_HOST_NAME: host.docker.internal
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+            - main-althingi-networks
 
     aggregator:
         container_name: althingi-aggregator
@@ -238,7 +237,7 @@ services:
 
     thumbor:
         container_name: althingi-image-server
-        image: minimalcompact/thumbor:6.7.5
+        image: minimalcompact/thumbor:7.0.0
         restart: on-failure
         networks:
             - main-althingi-networks
@@ -254,6 +253,14 @@ services:
 #
 #
 #
+    kafka-ui:
+        image: provectuslabs/kafka-ui:latest
+        ports:
+            - 8080:8080
+        environment:
+            - KAFKA_CLUSTERS_0_NAME=local
+            - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+
     elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch:7.13.2
         container_name: althingi-logger-elasticsearch
@@ -380,13 +387,8 @@ services:
 #
 volumes:
     source-db-volume:
-        external: true
     store-db-volume:
-        external: true
     elasticsearch-monitor-volume:
-        external: true
 
 networks:
     main-althingi-networks:
-        driver: bridge
-        name: main-althingi-networks

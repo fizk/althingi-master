@@ -12,7 +12,7 @@ services:
 
     store:
         ports:
-            - 8083:8080
+            - 8083:80
 
     store-db:
         ports:
@@ -28,10 +28,6 @@ services:
 
     # messages:
 
-    queue:
-        ports:
-            - 5672:5672
-            - 15672:15672
 
     # aggregator:
 

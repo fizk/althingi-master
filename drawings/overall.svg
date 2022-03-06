@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="973px" height="925px" viewBox="0 0 973 925" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>overall</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#F3DF94" offset="0%"></stop>
+            <stop stop-color="#8CAAE9" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="67.885583%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#FAB6B6" offset="0%"></stop>
+            <stop stop-color="#DEF0BF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#F3DF94" offset="0%"></stop>
+            <stop stop-color="#FAB6B6" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-4">
+            <stop stop-color="#FAB6B6" offset="0%"></stop>
+            <stop stop-color="#F3DF94" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="10.7118174%" x2="50%" y2="87.8843546%" id="linearGradient-5">
+            <stop stop-color="#474646" offset="0%"></stop>
+            <stop stop-color="#B1ECF1" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="23.6550742%" x2="50%" y2="100%" id="linearGradient-6">
+            <stop stop-color="#F3DF94" offset="0%"></stop>
+            <stop stop-color="#8CAAE9" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="1.6745369%" x2="50%" y2="77.2808421%" id="linearGradient-7">
+            <stop stop-color="#F3DF94" offset="0%"></stop>
+            <stop stop-color="#8CAAE9" offset="19.0973266%"></stop>
+            <stop stop-color="#8CAAE9" offset="54.8830337%"></stop>
+            <stop stop-color="#5B77B3" offset="87.01493%"></stop>
+            <stop stop-color="#8CAAE9" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <ellipse id="Oval" fill="#474646" cx="383.5" cy="542.5" rx="51.5" ry="16.5"></ellipse>
+        <g id="color" transform="translate(64.000000, 32.000000)">
+            <rect id="Rectangle" fill="#8CAAE9" x="0" y="527" width="140" height="35"></rect>
+            <rect id="Rectangle" fill="#8CAAE9" x="0" y="376" width="140" height="70"></rect>
+            <rect id="Rectangle" fill="#FAB6B6" x="472" y="110" width="140" height="70"></rect>
+            <rect id="Rectangle" fill="#DEF0BF" x="472" y="295" width="140" height="70"></rect>
+            <rect id="Rectangle" fill="#DEF0BF" x="472" y="427" width="140" height="70"></rect>
+            <rect id="Rectangle" fill="#DEF0BF" x="708" y="433" width="140" height="35"></rect>
+            <rect id="Rectangle" fill="#FAB6B6" x="708" y="126" width="140" height="35"></rect>
+            <rect id="Rectangle" fill="#F3DF94" x="0" y="204" width="140" height="35"></rect>
+            <rect id="Rectangle" fill="#F3DF94" x="236" y="139" width="140" height="35"></rect>
+            <rect id="Rectangle" fill="#8CAAE9" x="96" y="440" width="14" height="92"></rect>
+            <rect id="Rectangle-Copy" fill="url(#linearGradient-1)" x="99" y="233" width="7" height="147"></rect>
+            <rect id="Rectangle-Copy" fill="#F3DF94" x="189" y="153" width="7" height="156"></rect>
+            <rect id="Rectangle" fill="#F3DF94" x="137" y="216" width="56" height="7"></rect>
+            <rect id="Rectangle" fill="#F3DF94" x="189" y="153" width="49" height="7"></rect>
+            <rect id="Rectangle" fill="#F3DF94" x="189" y="303" width="49" height="7"></rect>
+            <rect id="Rectangle" fill="#DEF0BF" x="609" y="447" width="102" height="7"></rect>
+            <rect id="Rectangle" fill="url(#linearGradient-2)" x="569" y="177" width="14" height="122"></rect>
+            <rect id="Rectangle" fill="#FAB6B6" x="719" y="158" width="14" height="82"></rect>
+            <rect id="Rectangle-Copy-2" fill="#DEF0BF" x="569" y="360" width="14" height="72"></rect>
+            <rect id="Rectangle" fill="#FAB6B6" x="576" y="226" width="157" height="14"></rect>
+            <rect id="Rectangle" fill="#F3DF94" x="359" y="6" width="14" height="140"></rect>
+            <rect id="Rectangle" fill="url(#linearGradient-3)" x="786" y="1" width="14" height="134"></rect>
+            <rect id="Rectangle" fill="#F3DF94" x="359" y="0" width="441" height="14"></rect>
+            <rect id="Rectangle" fill="#F3DF94" x="353" y="217" width="143" height="14"></rect>
+            <rect id="Rectangle" fill="#F3DF94" x="353" y="217" width="14" height="83"></rect>
+            <rect id="Rectangle" fill="url(#linearGradient-4)" x="483" y="161" width="14" height="70"></rect>
+            <rect id="Rectangle" fill="url(#linearGradient-5)" x="329" y="503" width="7" height="77"></rect>
+            <rect id="Rectangle" fill="#B1EDF1" x="326" y="608" width="14" height="52"></rect>
+            <rect id="Rectangle" fill="#B1EDF1" x="519" y="718" width="14" height="64"></rect>
+            <rect id="Rectangle" fill="#B1EDF1" x="240" y="577" width="140" height="35"></rect>
+            <rect id="Rectangle" fill="#B1EDF1" x="420" y="777" width="140" height="35"></rect>
+            <rect id="Rectangle" fill="#B1EDF1" x="240" y="657" width="140" height="35"></rect>
+            <rect id="Rectangle" fill="#B1EDF1" x="420" y="657" width="140" height="70"></rect>
+            <rect id="Rectangle" fill="#B1EDF1" x="375" y="669" width="50" height="14"></rect>
+            <rect id="Rectangle" fill="#8CAAE9" x="136" y="386" width="116" height="14"></rect>
+            <rect id="Rectangle" fill="#8CAAE9" x="260" y="346" width="66" height="14"></rect>
+            <rect id="Rectangle" fill="url(#linearGradient-6)" x="312" y="321" width="14" height="28"></rect>
+            <rect id="Rectangle" fill="url(#linearGradient-7)" x="249" y="169" width="14" height="231"></rect>
+            <rect id="Rectangle" fill="#F3DF94" x="236" y="290" width="140" height="35"></rect>
+            <line x1="250.5" y1="324.5" x2="261.5" y2="324.5" id="Line" stroke="#474646" stroke-width="2" stroke-linecap="square"></line>
+            <line x1="250.5" y1="290.5" x2="261.5" y2="290.5" id="Line" stroke="#474646" stroke-width="2" stroke-linecap="square"></line>
+        </g>
+        <path d="M399,536 L394,536 L394,610 L305,610 L305,643 L391,643 L391,690 L305,690 L305,723 L443,723 L443,714 L485,714 L485,758 L584,758 L584,810 L485,810 L485,843 L623,843 L623,810 L596,810 L596,758 L623,758 L623,690 L485,690 L485,702 L443,702 L443,690 L403,690 L403,643 L443,643 L443,610 L399,610 L399,536 Z M863,33 L863,159 L911,159 L911,192 L796,192 L796,271 L646,271 L646,328 L675,328 L675,396 L646,396 L646,460 L675,460 L675,480 L773,480 L773,466 L911,466 L911,499 L773,499 L773,485 L675,485 L675,528 L537,528 L537,460 L634,460 L634,396 L537,396 L537,328 L634,328 L634,211 L560,211 L560,262 L430,262 L430,323 L439,323 L439,356 L389,356 L389,391 L326,391 L326,431 L203,431 L203,477 L173,477 L173,560 L203,560 L203,593 L65,593 L65,560 L161,560 L161,477 L65,477 L65,409 L164,409 L164,270 L65,270 L65,237 L203,237 L203,249 L254,249 L254,186 L301,186 L301,172 L424,172 L424,33 L863,33 Z M254,254 L203,254 L203,270 L169,270 L169,409 L203,409 L203,419 L314,419 L314,356 L301,356 L301,341 L254,341 L254,254 Z M377,356 L326,356 L326,379 L377,379 L377,356 Z M301,191 L259,191 L259,336 L301,336 L301,323 L314,323 L314,205 L301,205 L301,191 Z M851,45 L436,45 L436,172 L439,172 L439,205 L326,205 L326,323 L418,323 L418,250 L548,250 L548,211 L537,211 L537,143 L675,143 L675,211 L646,211 L646,259 L784,259 L784,192 L773,192 L773,159 L851,159 L851,45 Z" id="Combined-Shape" stroke="#474646" stroke-width="2"></path>
+        <g id="labels" transform="translate(64.000000, 117.000000)" fill="#000000" font-family="Futura-Medium, Futura" font-size="14" font-weight="400">
+            <text id="Aggregator">
+                <tspan x="0" y="433">Aggregator</tspan>
+            </text>
+            <text id="transform">
+                <tspan x="240" y="562">transform</tspan>
+            </text>
+            <text id="search">
+                <tspan x="420" y="562">search</tspan>
+            </text>
+            <text id="monitor">
+                <tspan x="420" y="682">monitor</tspan>
+            </text>
+            <text id="logs">
+                <tspan x="240" y="482">logs</tspan>
+            </text>
+            <text id="Source">
+                <tspan x="0" y="281">Source</tspan>
+            </text>
+            <text id="Store">
+                <tspan x="472" y="15">Store</tspan>
+            </text>
+            <text id="Server">
+                <tspan x="472" y="200">Server</tspan>
+            </text>
+            <text id="Client">
+                <tspan x="472" y="332">Client</tspan>
+            </text>
+            <text id="Images">
+                <tspan x="708" y="338">Images</tspan>
+            </text>
+            <text id="Search">
+                <tspan x="708" y="31">Search</tspan>
+            </text>
+            <text id="Broker">
+                <tspan x="0" y="109">Broker</tspan>
+            </text>
+            <text id="messanger-search">
+                <tspan x="235" y="44">messanger-search</tspan>
+            </text>
+            <text id="messanger-search">
+                <tspan x="236" y="195">messanger-search</tspan>
+            </text>
+        </g>
+        <polygon id="Rectangle" fill="#474646" transform="translate(134.000000, 637.000000) rotate(-135.000000) translate(-134.000000, -637.000000) " points="158 613 158 661 110 661"></polygon>
+        <polygon id="Rectangle" fill="#474646" transform="translate(605.000000, 541.000000) rotate(-315.000000) translate(-605.000000, -541.000000) " points="629 517 629 565 581 565"></polygon>
+        <polygon id="Rectangle" fill="#474646" transform="translate(565.000000, 853.000000) rotate(-315.000000) translate(-565.000000, -853.000000) " points="589 829 589 877 541 877"></polygon>
+        <g id="datasource" transform="translate(181.000000, 452.000000)">
+            <path d="M26.5,1 C19.3537003,1 12.8771504,1.86102583 8.16469886,3.2836527 C5.8660466,3.97758546 3.9971984,4.7983926 2.70649932,5.72821629 C1.72435536,6.4357559 1.05902795,7.18450845 1.00000356,8.03086728 L1.00392962,42.1075811 C1.06272547,42.9260237 1.73578495,43.6484676 2.71568319,44.3370105 C4.0157849,45.2505501 5.89724489,46.0610704 8.210941,46.7474894 C12.919679,48.1444607 19.377184,49 26.5,49 C33.7041674,49 40.2277311,48.1249134 44.9493251,46.6995265 C47.2620443,46.0013472 49.1319052,45.1785042 50.4042198,44.2512168 C51.3557761,43.5577044 52,42.8278263 52,42 L51.9960704,7.89241886 C51.9372745,7.07397626 51.264215,6.35153243 50.2843168,5.66298951 C48.9842151,4.74944992 47.1027551,3.93892956 44.789059,3.25251061 C40.080321,1.85553934 33.622816,1 26.5,1 Z" id="Combined-Shape" stroke="#474646" stroke-width="2" fill="#FFFFFF"></path>
+            <ellipse id="Oval" fill="#E2DEDE" cx="26.5" cy="9" rx="23.5" ry="7"></ellipse>
+        </g>
+        <g id="datasource" transform="translate(655.000000, 185.000000)">
+            <path d="M26.5,1 C19.3537003,1 12.8771504,1.86102583 8.16469886,3.2836527 C5.8660466,3.97758546 3.9971984,4.7983926 2.70649932,5.72821629 C1.72435536,6.4357559 1.05902795,7.18450845 1.00000356,8.03086728 L1.00392962,42.1075811 C1.06272547,42.9260237 1.73578495,43.6484676 2.71568319,44.3370105 C4.0157849,45.2505501 5.89724489,46.0610704 8.210941,46.7474894 C12.919679,48.1444607 19.377184,49 26.5,49 C33.7041674,49 40.2277311,48.1249134 44.9493251,46.6995265 C47.2620443,46.0013472 49.1319052,45.1785042 50.4042198,44.2512168 C51.3557761,43.5577044 52,42.8278263 52,42 L51.9960704,7.89241886 C51.9372745,7.07397626 51.264215,6.35153243 50.2843168,5.66298951 C48.9842151,4.74944992 47.1027551,3.93892956 44.789059,3.25251061 C40.080321,1.85553934 33.622816,1 26.5,1 Z" id="Combined-Shape" stroke="#474646" stroke-width="2" fill="#FFFFFF"></path>
+            <ellipse id="Oval" fill="#E2DEDE" cx="26.5" cy="9" rx="23.5" ry="7"></ellipse>
+        </g>
+    </g>
+</svg>

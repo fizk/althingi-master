@@ -11,7 +11,7 @@ It is a PHP application that is run like a CLI tool. It will pass formatted data
 <img src="drawings/source.png" />
 The [source](https://github.com/fizk/althingi-source) system is the single-source-of-truth for all data. It is fed data from the **Aggregator**. The role of this system is to keep data integrity and provide an API for any downstream system interested in formated and validated althingi.is data.
 
-It is a PHP application running behind an Apache HTTP server. It used MySQL as its data-storage. It has a built-in event system (event-driven-architecture) that will notify a broker (RabbitMQ) about any changes to its data-structure. The **Messages** is listening for these changes.
+It is a PHP application running behind an Apache HTTP server. It used MySQL as its data-storage. It has a built-in event system (event-driven-architecture) that will notify a broker (Apache Kafka) about any changes to its data-structure. The **Messages** is listening for these changes.
 
 ```sh
 docker compose up source
@@ -30,10 +30,10 @@ docker compose run --rm source index console:congressman --assembly_id=145
 <img src="drawings/messages.png" />
 The [messages](https://github.com/fizk/althingi-messages) is listening for changes in the **Source**. When changes are detected, this system will evaluate the changes and could go back to **The Source** for additional information.
 
-This system is fronted by a message-broker (RabbitMQ) that is listening for events from **The Source**, When a message is received, a Deno/TypeScript application will encode the message. It can go back to **The Source** for additional information before it relays the data to **The Store** or other systems. (Elasticsearch and Notification service are in the pipeline).
+This system is fronted by a message-broker (Apache Kafka) that is listening for events from **The Source**, When a message is received, a Deno/TypeScript application will encode the message. It can go back to **The Source** for additional information before it relays the data to **The Store** or other systems. (Elasticsearch and Notification service are in the pipeline).
 
 ```sh
-docker compose up messages
+docker compose up zookeeper kafka
 ```
 
 ### Search
@@ -61,14 +61,19 @@ docker compose up client server
 ```
 
 ### Monitor/Log
-[Logging and monitoring](https://github.com/fizk/althingi-monitor) is done by the ELK stack. There is a little bit of setup involved.
+[Logging and monitoring](https://github.com/fizk/althingi-monitor) is done by the ELK stack.
+**Filebeat** and **Metribeat** are listening to all running Docker Containers. It will feed `stdout` and `system-logs` into **Logstash**, which will format the stream before handing it over to **Elasticsearch**. Monitoring the logs is done through the **Kibana** interface.
+
+<img src="drawings/logging.png" />
+
+There is a little bit of setup involved.
 
 #### First.
 All the containers need to be started
 
 ```sh
-docker compose -f ./docker-compose.yaml up \
-    elasticsearch kibana metricbeat filebeat logstash -d
+docker compose -f ./docker-compose.yaml up -d \
+    elasticsearch kibana metricbeat filebeat logstash
 ```
 
 #### Next.
@@ -85,9 +90,9 @@ Indexes need to be initialized for system logging and monitoring
 docker compose run search-init
 ```
 
-Now everything should be set up and ready. Go to [http://localhost:8081](port 8081) to gain access to Kibana.
+Now everything should be set up and ready. Go to [localhost:8081](http://localhost:8081) to gain access to Kibana.
 
-**Note**: If you are initializing indexes for the first time, you might get a `404` error saying that the index doesn't exist. That's OK, the script is trying to delete the old index template and create a new. Since this is you first time running the script, the old index template won't exist, but a new template will stil be created.
+**Note**: If you are initializing indexes for the first time, you might get a `404` error saying that the index doesn't exist. That's OK, the script is trying to delete the old index template and create a new. Since this is you first time running the script, the old index template won't exist, but a new template will still be created.
 
 
 ## Running the system.
@@ -148,7 +153,7 @@ Lastly fetch the `assembly`.
 
 ```sh
 docker compose run --rm aggregator globals
-docker compose run --rm aggregator members 151
+docker compose run --rm aggregator members
 docker compose run --rm aggregator assembly 151
 ```
 
