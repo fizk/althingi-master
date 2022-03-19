@@ -2,12 +2,23 @@ version: '3'
 
 services:
 
-#
-#   Systems
-#
-#
-#
-#
+    #
+    #   Systems
+    #
+    #   These are the containers for the main part of the application/system.
+    #
+    #   A good way of starting the service is to first start the Broker/Queue/Kafka,
+    #       then the Source and Store and lastly the Message function
+    #
+    #
+    #   $ docker-compose up -d zookeeper kafka
+    #   $ docker-compose up -d source store server client
+    #   $ docker-compose up -d messages-store
+    #
+    #
+    #   Dependent services will be started automatically, like databases and image servers
+    #
+
     source:
         container_name: althingi-source
         image: einarvalur/althingi-source:latest
@@ -21,12 +32,8 @@ services:
             - DB_USER=root
             - DB_PASSWORD=example
             - LOG_PATH=php://stdout
-            - BROKER=none
-            - BROKER_HOST=queue
-            - BROKER_PORT=5672
-            - BROKER_USER=admin
-            - BROKER_PASSWORD=Admin@123
-            - BROKER_VHOST=/
+            - BROKER=kafka
+            - BROKER_HOST=kafka:9092
             - QUEUE_FORCED=false
             # - DOCUMENT_SERVER=
             # - DOCUMENT_DEFINITION=
@@ -34,7 +41,6 @@ services:
         networks:
             - main-althingi-networks
         depends_on:
-            # - kafka
             - source-db
         logging:
             driver: "json-file"
@@ -109,8 +115,11 @@ services:
         restart: on-failure
         ports:
             - 80:80
+            - 443:443
         networks:
             - main-althingi-networks
+        volumes:
+            - /etc/letsencrypt/:/etc/letsencrypt/
         depends_on:
             - server
             - thumbor
@@ -157,8 +166,8 @@ services:
                 max-size: "200k"
                 max-file: "5"
 
-
     zookeeper:
+        container_name: althingi-zookeeper
         image: wurstmeister/zookeeper
         restart: unless-stopped
         ports:
@@ -167,14 +176,26 @@ services:
             - main-althingi-networks
 
     kafka:
+        container_name: althingi-kafka
         image: wurstmeister/kafka:2.13-2.8.1
         restart: unless-stopped
         ports:
             - "9092"
         environment:
-            DOCKER_API_VERSION: 1.22
-            KAFKA_ADVERTISED_HOST_NAME: host.docker.internal
-            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+            # DOCKER_API_VERSION: 1.22
+            # KAFKA_CREATE_TOPICS: "test:1:1"
+            # KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+            # HOSTNAME_COMMAND: "route -n | awk '/UG[ \t]/{print $$2}'"
+
+            KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+            KAFKA_LISTENERS: 'INTERNAL://:9092'
+            KAFKA_ADVERTISED_LISTENERS: 'INTERNAL://:9092'
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'INTERNAL:PLAINTEXT'
+            KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: '1'
+            KAFKA_CREATE_TOPICS: 'example-topic:1:1'
+            KAFKA_ADVERTISED_HOST_NAME: host.docker.internal # change to 172.17.0.1 if running on Ubuntu
+            # https://www.architect.io/blog/2021-01-26/kafka-docker-tutorial
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
         networks:
@@ -247,19 +268,31 @@ services:
                 max-size: "200k"
                 max-file: "5"
 
-#
-#   Logging and monitoring
-#
-#
-#
-#
+    #
+    #   Logging and monitoring
+    #
+    #
+    #   These are the systems that deal with collecting and displaying metrics/data. 
+    #       They can pretty much be started in whatever order, but it would be best to
+    #       start them before the System.
+    #
+    #   You can split it up into services and dashboards.
+    #
+    #   $ docker-compose up -d elasticsearch  metricbeat filebeat logstash 
+    #   $ docker-compose up -d kibana kafka-ui
+    #
+    #
+    #
     kafka-ui:
+        container_name: althingi-kafka-ui
         image: provectuslabs/kafka-ui:latest
         ports:
             - 8080:8080
         environment:
             - KAFKA_CLUSTERS_0_NAME=local
             - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+        networks:
+            - main-althingi-networks
 
     elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch:7.13.2
@@ -381,9 +414,6 @@ services:
 
 #
 #   Volumes and network
-#
-#
-#
 #
 volumes:
     source-db-volume:

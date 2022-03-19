@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cd /var/app
+
+docker stop messages-store
+docker rm messages-store
+docker rmi einarvalur/althingi-messages-store:latest
+docker pull einarvalur/althingi-messages-store:latest
+docker-compose up -d messages-store
+
+echo "Updated einarvalur/althingi-messages-store"

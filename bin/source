@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cd /var/app
+
+docker stop althingi-source
+docker rm althingi-source
+docker rmi einarvalur/althingi-source:latest
+docker pull einarvalur/althingi-source:latest
+docker-compose up -d source
+
+echo "Updated einarvalur/althingi-source"

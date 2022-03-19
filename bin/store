@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cd /var/app
+
+docker stop althingi-store
+docker rm althingi-store
+docker rmi einarvalur/althingi-store:latest
+docker pull einarvalur/althingi-store:latest
+docker-compose up -d store
+
+echo "Updated einarvalur/althingi-store"

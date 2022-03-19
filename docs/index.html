@@ -1,51 +1,48 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <style>
-            body {
-                min-height: 100vh;
-                margin: 0;
-                display: grid;
-                grid-template-columns: 200px 1fr;
-            }
-            header {
-                grid-column: 1 / span 2;
-                background-color: aqua;
-            }
-            nav {
-                background-color: #8caae9;
-                color: white;
-
-            }
-            nav ul {
-                margin: 0;
-                grid-column: 1 / span 1;
-            }
-            main {
-                grid-column: 2 / span 1;
-            }
-            a {
-                color: currentColor;
-            }
-        </style>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="./style.css" type="text/css"rel="stylesheet" />
     </head>
     <body>
-        <header>blah</header>
-        <nav>
-            <ul>
-                <li><a href="#">Setup</a></li>
-                <li><a href="#">Aggregator</a></li>
-                <li><a href="#">Source</a></li>
-                <li><a href="#">Broker / messages</a></li>
-                <li><a href="#">Store</a></li>
-                <li><a href="#">Search</a></li>
-                <li><a href="#">Server</a></li>
-                <li><a href="#">Client</a></li>
-                <li><a href="#">Images</a></li>
-                <li><a href="#">Logs / monitoring</a></li>
+        <header class="template-header">blah</header>
+        <nav class="template-navigation">
+            <ul class="template-navigation__list">
+                <li class="template-navigation__item">
+                    <a class="template-navigation__link" href="./setup.html">Setup</a>
+                </li>
+                <li class="template-navigation__item">
+                    <a class="template-navigation__link" href="#">Aggregator</a>
+                </li>
+                <li class="template-navigation__item">
+                    <a class="template-navigation__link" href="#">Source</a>
+                </li>
+                <li class="template-navigation__item">
+                    <a class="template-navigation__link" href="#">Broker / messages</a>
+                </li>
+                <li class="template-navigation__item">
+                    <a class="template-navigation__link" href="#">Store</a>
+                </li>
+                <li class="template-navigation__item">
+                    <a class="template-navigation__link" href="#">Search</a>
+                </li>
+                <li class="template-navigation__item">
+                    <a class="template-navigation__link" href="#">Server</a>
+                </li>
+                <li class="template-navigation__item">
+                    <a class="template-navigation__link" href="#">Client</a>
+                </li>
+                <li class="template-navigation__item">
+                    <a class="template-navigation__link" href="#">Images</a>
+                </li>
+                <li class="template-navigation__item">
+                    <a class="template-navigation__link" href="#">Logs / monitoring</a>
+                </li>
             </ul>
         </nav>
-        <main>
+        <main class="template-content">
             <svg style="width: 100%; height:auto" viewBox="0 0 973 925" version="1.1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink">
                 <defs>

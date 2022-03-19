@@ -26,6 +26,20 @@ To index all congressmen in a give assembly, for example, run:
 docker compose run --rm source index console:congressman --assembly_id=145
 ```
 
+I sometimes even exec into the container and run all the commands like this:
+```sh
+php ./public/index.php console:constituency && \
+php ./public/index.php console:committee && \
+php ./public/index.php console:committee-sitting && \
+php ./public/index.php console:congressman && \
+php ./public/index.php console:inflation && \
+php ./public/index.php console:ministry && \
+php ./public/index.php console:minister-sitting && \
+php ./public/index.php console:party && \
+php ./public/index.php console:president-sitting && \
+php ./public/index.php console:session
+```
+
 ### Messages
 <img src="drawings/messages.png" />
 The [messages](https://github.com/fizk/althingi-messages) is listening for changes in the **Source**. When changes are detected, this system will evaluate the changes and could go back to **The Source** for additional information.
@@ -169,3 +183,46 @@ docker exec -it althingi-aggregator-cache-provider redis-cli FLUSHALL
 This repo contains the `scripts` directory. It contains scripts to stop a container, pull the latest version of this container and then start it up again.
 
 This is used in the CI/CD pipeline. Each service has its own script file which can be run, provided with the latest **tag** for a given service.
+
+
+
+
+
+
+## HTTPS/HTTP2
+The client is the front-facing service for this system, as such it needs to be served via HTTPS (or HTTP2).
+
+When the Client image is built for production, it configures Apache to use HTTP2. When configuring SSH keys, the build process needs to know the domain that the system will be running on. It is therefor crucial that the `DOMAIN` build-arg is passed. Currently, that's just [hard-coded into the build-config](https://github.com/fizk/althingi-client/blob/main/.github/workflows/github-actions-delpoy.yml#L33), but that might need to change.
+
+When setting up HTTPS certificates form scratch, run 
+```sh
+sudo docker run -it --rm --name certbot \
+            -v "/etc/letsencrypt:/etc/letsencrypt" \
+            -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
+            certbot/certbot certonly
+```
+
+This will ask you a few questions, the most important one being the **domain** that the app will be served from. It's also important this is not run while the Client is running because this Docker container needs the 80 port to connect to the [Certbot](https://certbot.eff.org/) server.
+
+The **domain** you provide will obviously need to be the same as the Docker image was built with.
+
+Once that's all done and dusted, run `./bin/letsencrypt.sh`. This script will copy the .pem files required for the Client into the system's root directory (see script for hard-coded paths). Don't worry about this script saying that the certificates aren't up for renewal.
+
+Once that's done as well, start the Client container. It should have all the required files mounted in the `docker-compose.yaml` and everything should kinda work.
+
+Lastly you need to call `./bin/letsencrypt.sh` by a `cron` job at least once a week. This script will stop the Client container, renew the certificate, copy the right files into the system's project directory, change the file-permissions and then restart the Client container... yes, the service will go down for 30sec or so, so it's good to have the cron job run in the middle of the night.
+
+For _development_, that is: when the **build-arg** `ENV=development` is used to build the image, Apache will be configured with a regular 80 port and no SSH/HTTPS which you then map to what ever host-port you like (probable in your docker-compose.yaml file). This should make is very simple to do development locally on a standard HTTP connection.
+
+
+## End2End test on local
+Sometimes I like to run the critical parts of the system to be able to do some simple end2end tests. I usually start the service in this order, using the `docker-compose.ports.yaml` file as well to open all the ports so I can have a peek at the output of each. I'm not bothered running the logging part of the system (file- metricbeat etc...)
+
+This will pull the docker images from DockerHub with their configuration set to production. This will not really work for the Client because that variation requires ssh certificates. A better way would be to build a local version (in development mode) for the Client and then start it separately. Just make sure you connect it to the right docker-network etc...
+```sh
+docker-compose up -d kafka zookeeper kafka-ui
+docker-compose -f ./docker-compose.yaml -f ./docker-compose.ports.yaml up -d source store messages-store 
+# docker-compose -f ./docker-compose.yaml -f ./docker-compose.ports.yaml up -d client
+```
+
+

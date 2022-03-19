@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cd /var/app
+
+docker stop althingi-client
+docker rm althingi-client
+docker rmi einarvalur/althingi-client:latest
+docker pull einarvalur/althingi-client:latest
+docker-compose up -d client
+
+echo "Updated einarvalur/althingi-client"

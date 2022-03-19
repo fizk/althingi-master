@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./style.css" type="text/css" rel="stylesheet" />
+    <title>Document</title>
+</head>
+<body>
+    <header class="template-header">blah</header>
+    <nav class="template-navigation"></nav>
+    <main class="template-content">
+
+
+        <article class="content">
+            <h2>The system's components.</h2>
+
+            <section aria-label="Aggregate">
+                <h3>Aggregate</h3>
+                <img src="../drawings/aggregator.png" style="max-width: 100%;">
+                <p>
+                    The <a href="https://github.com/fizk/althingi-aggregator">Aggregator</a> system is responsible for fetching data from <a href="https://www.althingi.is/altext/xml/">althingi.is</a>.
+                </p>
+                <p>
+                    It is a PHP application that is run like a CLI tool. It will pass formatted data onto the <strong>Source</strong>. It is dependent on (Redis) caching servers.
+                </p>
+            </section>
+
+            <section aria-label="Source">
+                <h3>Source</h3>
+                <img src="../drawings/source.png" style="max-width: 100%;">
+                <p>
+                    The <a href="https://github.com/fizk/althingi-source">Source</a> system is the single-source-of-truth for all data. It is fed data from the <strong>Aggregator</strong>. The role of this system is to keep data integrity and provide an API for any downstream system interested in formated and validated <em>althingi.is</em> data.
+                </p>
+                <p>
+                    It is a PHP application running behind an Apache HTTP server. It used MySQL as its data-storage. It has a built-in event system (event-driven-architecture) that will notify a broker (Apache Kafka) about any changes to its data-structure. The <strong>Messages</strong> is listening for these changes.
+                </p>
+                <pre>docker compose up source</pre>
+                <p>
+                    It is also possible to instruct this system to (re)broadcast events. This can come in handy if you already have all the data in this system, but your <strong>Store</strong> is empty. All downstream systems (Message, Store) need to be running as well. To get a list of all available commands, run:
+                </p>
+                <pre>docker compose run --rm source index console</pre>
+                <p>
+                    To index all congressmen in a give assembly, for example, run:
+                </p>
+                <pre>docker compose run --rm source index console:congressman --assembly_id=145</pre>
+            </section>
+
+            <section>
+                <h3>Messages</h3>
+                <p>
+                    <a target="_blank" href="/fizk/althingi-master/blob/main/drawings/messages.png">
+                        <img src="/fizk/althingi-master/raw/main/drawings/messages.png" style="max-width: 100%;">
+                    </a>
+                </p>
+                <p>
+                    The (<a href="https://github.com/fizk/althingi-messages">messages</a> is listening for changes in the <strong>Source</strong>. When changes are detected, this system will evaluate the changes and could go back to <strong>The Source</strong> for additional information.
+                </p>
+                <p>
+                    This system is fronted by a message-broker (Apache Kafka) that is listening for events from <strong>The Source</strong>, When a message is received, a Deno/TypeScript application will encode the message. It can go back to <strong>The Source</strong> for additional information before it relays the data to <strong>The Store</strong> or other systems. (Elasticsearch and Notification service are in the pipeline).
+                </p>
+                <pre>docker compose up zookeeper kafka</pre>
+            </section>
+
+            <section>
+                <h3>Search</h3>
+                <p><a target="_blank" href="/fizk/althingi-master/blob/main/drawings/search.png"><img
+                    src="/fizk/althingi-master/raw/main/drawings/search.png" style="max-width: 100%;"></a></p>
+                    TBC
+            </section>
+
+            <section>
+                <h3>Store</h3>
+                <p>
+                    <a target="_blank" href="/fizk/althingi-master/blob/main/drawings/store.png">
+                        <img src="/fizk/althingi-master/raw/main/drawings/store.png" style="max-width: 100%;">
+                    </a>
+                </p>
+                <p>
+                    The <a href="https://github.com/fizk/althingi-store">store</a> is responsible for maintaining a de-normalized/aggregated version of data stored in **The Store**. Its role is to contain computed values/data-structures for fast delivery.
+                </p>
+                <p>
+                    This system is a Java SpringBoot web application. It uses MongoDB as its data-store. It gets its data from <strong>The Messages</strong>.
+                </p>
+            </section>
+
+            <section>
+                <h3>Client/Server</h3>
+                <p>
+                    <a target="_blank" href="/fizk/althingi-master/blob/main/drawings/server-client.png">
+                        <img src="/fizk/althingi-master/raw/main/drawings/server-client.png" style="max-width: 100%;">
+                    </a>
+                </p>
+                <p>
+                    The <a href="https://github.com/fizk/althingi-app">client/server</a> are two systems in one repo. Firstly, **The server** is a Deno/TypeScript application that sources data fom **The Store** and makes is available through a GraphQL API. In the future, this service will also source data from an Elasticsearch service.
+                </p>
+
+                <p>
+                    Secondly, <strong>The Client</strong> is an Apache HTTP server that serves static assets such as JS, CSS and
+                    other assets to a web-browser. It also works as a reverse-proxy and behinds the sense sources cropped images
+                    from a Thumbor image server as well as relaying all graph-ql requests to <strong>The Server</strong>. It does
+                    everything a production-ready HTTP server would do like: gzip all assets, provides HTTPS/HTTP2 access etc..
+                </p>
+
+                <pre>docker compose up client server</pre>
+            </section>
+
+            <section>
+                <h3>Monitor/Log</h3>
+                <p>
+                    <a href="https://github.com/fizk/althingi-monitor">Logging and monitoring</a> is done by the ELK stack.
+                    <strong>Filebeat</strong> and <strong>Metribeat</strong> are listening to all running Docker Containers. It will feed <code>stdout</code> and <code>system-logs</code> into <strong>Logstash</strong>, which will format the stream before handing it over to <strong>Elasticsearch</strong>. Monitoring the logs is done through the
+                    <strong>Kibana</strong> interface.
+                </p>
+                <p>
+                    <a target="_blank" href="/fizk/althingi-master/blob/main/drawings/logging.png">
+                        <img src="/fizk/althingi-master/raw/main/drawings/logging.png" style="max-width: 100%;">
+                    </a>
+                </p>
+                <p>
+                    There is a little bit of setup involved.
+                </p>
+                <h4>First.</h4>
+                <p>All the containers need to be started</p>
+
+                <pre>docker compose -f ./docker-compose.yaml up -d \
+                elasticsearch kibana metricbeat filebeat logstash</pre>
+
+                <h4>Next.</h4>
+                <p>
+                    Metricbeat needs to create all required indexes and dashboards in Elasicseach/Kibana. (This might take a few minutes)
+                </p>
+                <pre>docker compose run metricbeat bash -c "metricbeat setup -E setup.kibana.host=kibana:5601 -E output.elasticsearch.hosts=[\"elasticsearch:9200\"]"</pre>
+
+                <h4>Last.</h4>
+                <p>
+                    Indexes need to be initialized for system logging and monitoring
+                </p>
+
+                <pre>docker compose run search-init</pre>
+
+                <p>
+                    Now everything should be set up and ready. Go to <a href="http://localhost:8081">localhost:8081</a> to gain access to Kibana.</p>
+                <p>
+                    <strong>Note</strong>: If you are initializing indexes for the first time, you might get a <code>404</code> error saying that the index doesn't exist. That's OK, the script is trying to delete the old index template and create a new. Since this is you first time running the script, the old index template won't exist, but a new template will still be created.
+                </p>
+            </section>
+
+            <section>
+                <h2>Running the system.</h2>
+                <p>You can run the system locally</p>
+
+                <pre>docker compose -f ./docker-compose.yaml up \
+                source store messages client server -d
+                </pre>
+
+                <p>
+                    By default the docker-compose file does not expose any ports (except for the 80 port for Apache). While running this on a local machine for educational purposes, it is good to be able to poke into different services. For that, this repo provides an overwrite <code>docker-compose.ports.yaml</code> file that exposes all the default ports. Simply add a reference to it when starting the containers.
+                </p>
+
+                <pre>docker compose -f ./docker-compose.yaml -f docker-compose.ports.yaml up \
+                source store messages client server -d</pre>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>service</th>
+                            <th>port</th>
+                            <th>description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>source</td>
+                            <td>8082</td>
+                            <td>The single source of truth API</td>
+                        </tr>
+                        <tr>
+                            <td>source-db</td>
+                            <td>3306</td>
+                            <td>MySQL database powering <code>source</code></td>
+                        </tr>
+                        <tr>
+                            <td>store</td>
+                            <td>8083</td>
+                            <td>The aggregated datasource</td>
+                        </tr>
+                        <tr>
+                            <td>store-db</td>
+                            <td>27017</td>
+                            <td>MongoDB powering <code>store</code></td>
+                        </tr>
+                        <tr>
+                            <td>client</td>
+                            <td>80</td>
+                            <td>Apache</td>
+                        </tr>
+                        <tr>
+                            <td>server</td>
+                            <td>8084</td>
+                            <td>GraphQL server</td>
+                        </tr>
+                        <tr>
+                            <td>queue</td>
+                            <td>15672</td>
+                            <td>RabbitMQ dashboard</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>Now that the system is running, start the monitoring</p>
+
+                <pre>docker compose -f ./docker-compose.yaml up \
+                elasticsearch kibana metricbeat filebeat logstash -d</pre>
+
+                <p>Consult the section above get initialize the monitor system.</p>
+                <p>The <code>docker-compose.ports.yaml</code> file can be used to expose ports.</p>
+
+                <pre>docker compose -f ./docker-compose.yaml  -f docker-compose.ports.yaml up \
+                elasticsearch kibana metricbeat filebeat logstash -d</pre>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>service</th>
+                            <th>port</th>
+                            <th>description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>elasticsearch</td>
+                            <td>9200</td>
+                            <td>The Elasticsearch cluster</td>
+                        </tr>
+                        <tr>
+                            <td>kibana</td>
+                            <td>8081</td>
+                            <td>Kibana dashboard</td>
+                        </tr>
+                        <tr>
+                            <td>metricbeat</td>
+                            <td>-</td>
+                            <td>no port available</td>
+                        </tr>
+                        <tr>
+                            <td>filebeat</td>
+                            <td>-</td>
+                            <td>no port available</td>
+                        </tr>
+                        <tr>
+                            <td>logstash</td>
+                            <td>-</td>
+                            <td>no port available</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </section>
+
+            <section>
+                <h2>Fetching data</h2>
+                <p>
+                    The <a href="https://github.com/fizk/althingi-aggregator">aggregator</a> is used to fetch data. First run the <code>globals</code> script, it will fetch all required entries that are needed for individual assembly, but span across multiple assemblies: like committees, categories etc...
+                </p>
+                <p>Next fetch all <code>members</code>. This ensures that all congressmen are present.</p>
+                <p>Lastly fetch the <code>assembly</code>.</p>
+
+                    <pre>docker compose run --rm aggregator globals
+                docker compose run --rm aggregator members
+                docker compose run --rm aggregator assembly 151</pre>
+
+            </section>
+
+            <section>
+                <h2>Clear cache.</h2>
+                <p>
+                    When data is fetched from <code>althingi.is</code>, the entries are cached. If so required, the cache an be cleared by running:
+                </p>
+                <pre>docker <span>exec</span> -it althingi-aggregator-cache-consumer redis-cli FLUSHALL
+                docker exec -it althingi-aggregator-cache-provider redis-cli FLUSHALL</pre>
+
+            </section>
+
+            <section>
+                <h2>CI/CD</h2>
+                <p>
+                    This repo contains the <code>scripts</code> directory. It contains scripts to stop a container, pull the latest
+                    version of this container and then start it up again.
+                </p>
+                <p>
+                    This is used in the CI/CD pipeline. Each service has its own script file which can be run, provided with the latest <strong>tag</strong> for a given service.</p>
+            </section>
+        </article>
+
+    </main>
+</body>
+</html>

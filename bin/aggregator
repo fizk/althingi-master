@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd /var/app
+
+docker rmi einarvalur/althingi-aggregator:latest
+docker pull einarvalur/althingi-aggregator:latest
+
+echo "Updated einarvalur/althingi-source"
