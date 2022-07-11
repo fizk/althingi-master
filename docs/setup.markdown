@@ -1,3 +1,9 @@
+---
+layout: page
+title: Setup
+permalink: /setup/
+---
+<svg></svg>
 
 ## The system's components.
 
@@ -226,5 +232,8 @@ docker-compose -f ./docker-compose.yaml -f ./docker-compose.ports.yaml up -d sou
 ```
 
 ```sh
-bundle exec jekyll serve
+docker run --rm \
+  --volume="$PWD/blog:/srv/jekyll" \
+  -it jekyll/jekyll:3.8 \
+  jekyll build
 ```
