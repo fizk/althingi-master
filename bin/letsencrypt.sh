@@ -7,7 +7,7 @@
 # 	If this is not the case, then you need to change these two values.
 #
 # This script is also expecting that a domain has already been registered with letsencrypt,
-#	the purpose of this script is only to renew. If that's not the case, you need to 
+#	the purpose of this script is only to renew. If that's not the case, you need to
 #	run this first:
 #
 # ```

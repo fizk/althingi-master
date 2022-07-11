@@ -194,7 +194,7 @@ The client is the front-facing service for this system, as such it needs to be s
 
 When the Client image is built for production, it configures Apache to use HTTP2. When configuring SSH keys, the build process needs to know the domain that the system will be running on. It is therefor crucial that the `DOMAIN` build-arg is passed. Currently, that's just [hard-coded into the build-config](https://github.com/fizk/althingi-client/blob/main/.github/workflows/github-actions-delpoy.yml#L33), but that might need to change.
 
-When setting up HTTPS certificates form scratch, run 
+When setting up HTTPS certificates form scratch, run
 ```sh
 sudo docker run -it --rm --name certbot \
             -v "/etc/letsencrypt:/etc/letsencrypt" \
@@ -221,8 +221,13 @@ Sometimes I like to run the critical parts of the system to be able to do some s
 This will pull the docker images from DockerHub with their configuration set to production. This will not really work for the Client because that variation requires ssh certificates. A better way would be to build a local version (in development mode) for the Client and then start it separately. Just make sure you connect it to the right docker-network etc...
 ```sh
 docker-compose up -d kafka zookeeper kafka-ui
-docker-compose -f ./docker-compose.yaml -f ./docker-compose.ports.yaml up -d source store messages-store 
+docker-compose -f ./docker-compose.yaml -f ./docker-compose.ports.yaml up -d source store messages-store
 # docker-compose -f ./docker-compose.yaml -f ./docker-compose.ports.yaml up -d client
 ```
 
-
+```sh
+docker run --rm \
+  --volume="$PWD/blog:/srv/jekyll" \
+  -it jekyll/jekyll:3.8 \
+  jekyll build
+```
