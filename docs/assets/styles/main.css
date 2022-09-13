@@ -1,0 +1,88 @@
+html {
+    -webkit-text-size-adjust: 100%;
+}
+body {
+    font-family: "Avenir", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: rgb(39, 39, 39);
+    font-size: 15px;
+    letter-spacing: 0;
+    min-height: 100vh;
+    line-height: 1.25
+}
+
+.branding {
+    text-align: center;
+}
+
+/* - - - [NAV] - - - - - - - - - - - - */
+.app__body {
+    margin: 0;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 20rem 1fr;
+}
+.app__header {
+    background-color: #f3f3f3;
+    grid-column: 1 / span 1;
+}
+.app__navigation {
+    background-color: #f3f3f3;
+    grid-column: 1 / span 1;
+    grid-row: 2 / span 1;
+    padding: 1.563rem;
+}
+.app__main {
+    grid-column: 2 / span 1;
+    grid-row: 1 / span 2;
+    max-width: 960px;
+}
+.app__footer {
+    background-color: #f3f3f3;
+}
+
+
+/* - - - [NAV] - - - - - - - - - - - - */
+.navigation{}
+.navigation__group {}
+.navigation__list {}
+.navigation__item {
+    text-decoration: none;
+}
+.navigation__item--active {
+    font-weight: bold;
+}
+
+
+
+
+
+/* - - - [PAGE] - - - - - - - - - - - - */
+.page {
+
+}
+.page__header {
+    padding: 4.768rem 3.052rem;
+}
+.page__content {
+    padding: 0 3.052rem;
+}
+
+.page__content code {
+    background-color: #eeeeee;
+    padding: 0 0.3rem;
+}
+
+.page table {
+        border-collapse: collapse;
+}
+.page table td {
+    border-bottom: 1px solid orange;
+}
+.page table td {
+    vertical-align: top;
+    padding: 0.8rem;
+}
+
+.page h2 {
+    margin: 4.768rem 0 0 0;
+}

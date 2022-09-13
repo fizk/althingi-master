@@ -1,20 +1,20 @@
 ---
 layout: page
-title: Setup
-permalink: /setup/
+title: Development |> System Setup
+permalink: /development/setup
 ---
 <svg></svg>
 
 ## The system's components.
 
 ### Aggregate
-<img src="drawings/aggregator.png" />
+<img src="/assets/images/aggregator.png" />
 The [aggregator](https://github.com/fizk/althingi-aggregator) system is responsible for fetching data from [althingi.is](althingi.is).
 
 It is a PHP application that is run like a CLI tool. It will pass formatted data onto the **Source**. It is dependent on (Redis) caching servers.
 
 ### Source
-<img src="drawings/source.png" />
+<img src="/assets/images/source.png" />
 The [source](https://github.com/fizk/althingi-source) system is the single-source-of-truth for all data. It is fed data from the **Aggregator**. The role of this system is to keep data integrity and provide an API for any downstream system interested in formated and validated althingi.is data.
 
 It is a PHP application running behind an Apache HTTP server. It used MySQL as its data-storage. It has a built-in event system (event-driven-architecture) that will notify a broker (Apache Kafka) about any changes to its data-structure. The **Messages** is listening for these changes.
@@ -47,7 +47,7 @@ php ./public/index.php console:session
 ```
 
 ### Messages
-<img src="drawings/messages.png" />
+<img src="/assets/images/messages.png" />
 The [messages](https://github.com/fizk/althingi-messages) is listening for changes in the **Source**. When changes are detected, this system will evaluate the changes and could go back to **The Source** for additional information.
 
 This system is fronted by a message-broker (Apache Kafka) that is listening for events from **The Source**, When a message is received, a Deno/TypeScript application will encode the message. It can go back to **The Source** for additional information before it relays the data to **The Store** or other systems. (Elasticsearch and Notification service are in the pipeline).
@@ -57,11 +57,11 @@ docker compose up zookeeper kafka
 ```
 
 ### Search
-<img src="drawings/search.png" />
+<img src="/assets/images/search.png" />
 TBC
 
 ### Store
-<img src="drawings/store.png" />
+<img src="/assets/images/store.png" />
 The [store](https://github.com/fizk/althingi-store) is responsible for maintaining a de-normalized/aggregated version of data stored in **The Store**. Its role is to contain computed values/data-structures for fast delivery.
 
 This system is a Java SpringBoot web application. It uses MongoDB as its data-store. It gets its data from **The Messages**.
@@ -71,7 +71,7 @@ docker compose up store
 ```
 
 ### Client/Server
-<img src="drawings/server-client.png" />
+<img src="/assets/images/server-client.png" />
 The [client/server](https://github.com/fizk/althingi-app) are two systems in one repo. Firstly, **The server** is a Deno/TypeScript application that sources data fom **The Store** and makes is available through a GraphQL API. In the future, this service will also source data from an Elasticsearch service.
 
 Secondly, **The Client** is an Apache HTTP server that serves static assets such as JS, CSS and other assets to a web-browser. It also works as a reverse-proxy and behinds the sense sources cropped images from a Thumbor image server as well as relaying all graph-ql requests to **The Server**. It does everything a production-ready HTTP server would do like: gzip all assets, provides HTTPS/HTTP2 access etc...
@@ -84,7 +84,7 @@ docker compose up client server
 [Logging and monitoring](https://github.com/fizk/althingi-monitor) is done by the ELK stack.
 **Filebeat** and **Metribeat** are listening to all running Docker Containers. It will feed `stdout` and `system-logs` into **Logstash**, which will format the stream before handing it over to **Elasticsearch**. Monitoring the logs is done through the **Kibana** interface.
 
-<img src="drawings/logging.png" />
+<img src="/assets/images/logging.png" />
 
 There is a little bit of setup involved.
 

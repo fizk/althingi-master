@@ -1,0 +1,642 @@
+---
+layout: page
+title: Source Events
+permalink: /systems/source/events
+---
+
+<style>
+    .highlight {
+        background-color: #fff;
+        color: #333333;
+    }
+
+    .highlight .hll {
+        background-color: #ffffcc;
+    }
+
+    .highlight .c {
+        color: #999988;
+        font-style: italic
+    }
+
+    .highlight .err {
+        color: #a61717;
+        background-color: #e3d2d2
+    }
+
+    .highlight .k {
+        font-weight: bold
+    }
+
+    .highlight .o {
+        font-weight: bold
+    }
+
+    .highlight .cm {
+        color: #999988;
+        font-style: italic
+    }
+
+    .highlight .cp {
+        color: #999999;
+        font-weight: bold
+    }
+
+    .highlight .c1 {
+        color: #999988;
+        font-style: italic
+    }
+
+    .highlight .cs {
+        color: #999999;
+        font-weight: bold;
+        font-style: italic
+    }
+
+    .highlight .gd {
+        color: #000000;
+        background-color: #ffdddd
+    }
+
+    .highlight .ge {
+        font-style: italic
+    }
+
+    .highlight .gr {
+        color: #aa0000
+    }
+
+    .highlight .gh {
+        color: #999999
+    }
+
+    .highlight .gi {
+        color: #000000;
+        background-color: #ddffdd
+    }
+
+    .highlight .go {
+        color: #888888
+    }
+
+    .highlight .gp {
+        color: #555555
+    }
+
+    .highlight .gs {
+        font-weight: bold
+    }
+
+    .highlight .gu {
+        color: #800080;
+        font-weight: bold
+    }
+
+    .highlight .gt {
+        color: #aa0000
+    }
+
+    .highlight .kc {
+        font-weight: bold
+    }
+
+    .highlight .kd {
+        font-weight: bold
+    }
+
+    .highlight .kn {
+        font-weight: bold
+    }
+
+    .highlight .kp {
+        font-weight: bold
+    }
+
+    .highlight .kr {
+        font-weight: bold
+    }
+
+    .highlight .kt {
+        color: #445588;
+        font-weight: bold
+    }
+
+    .highlight .m {
+        color: #009999
+    }
+
+    .highlight .s {
+        color: #dd1144
+    }
+
+    .highlight .n {
+        color: #333333
+    }
+
+    .highlight .na {
+        color: teal
+    }
+
+    .highlight .nb {
+        color: #0086b3
+    }
+
+    .highlight .nc {
+        color: #445588;
+        font-weight: bold
+    }
+
+    .highlight .no {
+        color: teal
+    }
+
+    .highlight .ni {
+        color: purple
+    }
+
+    .highlight .ne {
+        color: #990000;
+        font-weight: bold
+    }
+
+    .highlight .nf {
+        color: #990000;
+        font-weight: bold
+    }
+
+    .highlight .nn {
+        color: #555555
+    }
+
+    .highlight .nt {
+        color: navy
+    }
+
+    .highlight .nv {
+        color: teal
+    }
+
+    .highlight .ow {
+        font-weight: bold
+    }
+
+    .highlight .w {
+        color: #bbbbbb
+    }
+
+    .highlight .mf {
+        color: #009999
+    }
+
+    .highlight .mh {
+        color: #009999
+    }
+
+    .highlight .mi {
+        color: #009999
+    }
+
+    .highlight .mo {
+        color: #009999
+    }
+
+    .highlight .sb {
+        color: #dd1144
+    }
+
+    .highlight .sc {
+        color: #dd1144
+    }
+
+    .highlight .sd {
+        color: #dd1144
+    }
+
+    .highlight .s2 {
+        color: #dd1144
+    }
+
+    .highlight .se {
+        color: #dd1144
+    }
+
+    .highlight .sh {
+        color: #dd1144
+    }
+
+    .highlight .si {
+        color: #dd1144
+    }
+
+    .highlight .sx {
+        color: #dd1144
+    }
+
+    .highlight .sr {
+        color: #009926
+    }
+
+    .highlight .s1 {
+        color: #dd1144
+    }
+
+    .highlight .ss {
+        color: #990073
+    }
+
+    .highlight .bp {
+        color: #999999
+    }
+
+    .highlight .vc {
+        color: teal
+    }
+
+    .highlight .vg {
+        color: teal
+    }
+
+    .highlight .vi {
+        color: teal
+    }
+
+    .highlight .il {
+        color: #009999
+    }
+
+    .highlight .gc {
+        color: #999;
+        background-color: #EAF2F5
+    }
+</style>
+
+<p>Every time there is an update to the models, an event is fired.</p>
+<p>The payload will always look like this, where the <code>body: Model</code> is described with the following interface</p>
+<pre class="highlight">
+<span class="kr">interface</span> <span class="nx">Message</span> <span class="p">{</span>
+    <span class="nx">id</span>: <span class="kt">string</span>
+    <span class="nx">body</span>: <span class="kr">Model</span>
+    <span class="nx">index</span>: <span class="kt">string</span>
+<span class="p">}</span>
+</pre>
+<details>
+    <summary>assembly <strong>done</strong></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">Assembly</span><span class="p">{</span>
+        <span class="nx">assembly_id</span>: <span class="kt">number</span><span class="p">,</span>
+        <span class="nx">from</span>: <span class="kt">string</span> <span class="c1">//(&#39;Y-m-d&#39;),</span>
+        <span class="nx">to</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span> <span class="c1">//(&#39;Y-m-d&#39;),</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+</details>
+
+<details>
+    <summary>cabinet</summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">Cabinet</span> <span class="p">{</span>
+        <span class="nx">cabinet_id</span>: <span class="kt">number</span>
+        <span class="nx">title</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">description</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">from</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span> <span class="c1">//(&#39;Y-m-d&#39;),</span>
+        <span class="nx">to</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span> <span class="c1">//(&#39;Y-m-d&#39;),</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary><s>category</s></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">Category</span> <span class="p">{</span>
+        <span class="nx">category_id</span>: <span class="kt">number</span><span class="p">;</span>
+        <span class="nx">super_category_id</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">title</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">description</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary>committee <strong>done</strong></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">Committee</span> <span class="p">{</span>
+        <span class="nx">committee_id</span>: <span class="kt">number</span>
+        <span class="nx">name</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">first_assembly_id</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">last_assembly_id</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">abbr_long</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">abbr_short</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+    <span class="p">};</span>
+    </pre>
+</details>
+
+<details>
+    <summary>committee-sitting <strong>done</strong></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">CommitteeSitting</span> <span class="p">{</span>
+        <span class="nx">committee_sitting_id</span>: <span class="kt">number</span>
+        <span class="nx">congressman_id</span>: <span class="kt">number</span>
+        <span class="nx">committee_id</span>: <span class="kt">number</span>
+        <span class="nx">assembly_id</span>: <span class="kt">number</span>
+        <span class="nx">order</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="nx">role</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="nx">from</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span> <span class="c1">//(&#39;Y-m-d&#39;),</span>
+        <span class="nx">to</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span> <span class="c1">//(&#39;Y-m-d&#39;),</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary>congressman-document</summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">CongressmanDocument</span> <span class="p">{</span>
+        <span class="nx">document_id</span>: <span class="kt">number</span>
+        <span class="nx">issue_id</span>: <span class="kt">number</span>
+        <span class="nx">category</span>: <span class="kt">string</span>
+        <span class="nx">assembly_id</span>: <span class="kt">number</span>
+        <span class="nx">congressman_id</span>: <span class="kt">number</span>
+        <span class="nx">minister</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">order</span>: <span class="kt">number</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary>congressman <strong>done</strong></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">Congressman</span> <span class="p">{</span>
+        <span class="nx">congressman_id</span>: <span class="kt">number</span>
+        <span class="nx">name</span>: <span class="kt">string</span>
+        <span class="nx">birth</span>: <span class="kt">string</span> <span class="c1">//(&#39;Y-m-d&#39;),</span>
+        <span class="nx">death</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span> <span class="c1">//(&#39;Y-m-d&#39;),</span>
+        <span class="nx">abbreviation</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary>constituency <strong>done</strong></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">Constituency</span> <span class="p">{</span>
+        <span class="nx">constituency_id</span>: <span class="kt">number</span>
+        <span class="nx">name</span>: <span class="kt">string</span><span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">abbr_short</span>: <span class="kt">string</span><span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">abbr_long</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">description</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary>document</summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">Document</span> <span class="p">{</span>
+        <span class="nx">document_id</span>: <span class="kt">number</span>
+        <span class="nx">issue_id</span>: <span class="kt">number</span>
+        <span class="nx">category</span>: <span class="kt">string</span>
+        <span class="nx">assembly_id</span>: <span class="kt">number</span>
+        <span class="nx">date</span>: <span class="kt">string</span> <span class="c1">//(&#39;Y-m-d H:i:s&#39;),</span>
+        <span class="nx">url</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">type</span>: <span class="kt">string</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary>inflation <strong>done</strong></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">Inflation</span> <span class="p">{</span>
+        <span class="nx">id</span>: <span class="kt">number</span>
+        <span class="nx">value</span>: <span class="kt">number</span>
+        <span class="nx">date</span>: <span class="kt">string</span> <span class="c1">//(&#39;Y-m-d&#39;),</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary>issue-category <strong>done</strong></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">IssueCategory</span> <span class="p">{</span>
+        <span class="nx">category_id</span>: <span class="kt">number</span>
+        <span class="nx">issue_id</span>: <span class="kt">number</span>
+        <span class="nx">assembly_id</span>: <span class="kt">number</span>
+        <span class="nx">category</span>: <span class="kt">string</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary>issue-link</summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">IssueLink</span> <span class="p">{</span>
+        <span class="nx">to_assembly_id</span>: <span class="kt">number</span>
+        <span class="nx">to_issue_id</span>: <span class="kt">number</span>
+        <span class="nx">to_category</span>: <span class="kt">string</span>
+        <span class="nx">from_assembly_id</span>: <span class="kt">number</span>
+        <span class="nx">from_issue_id</span>: <span class="kt">number</span>
+        <span class="nx">from_category</span>: <span class="kt">number</span>
+        <span class="nx">type</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary>issue <strong>done</strong></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">Issue</span> <span class="p">{</span>
+        <span class="nx">issue_id</span>: <span class="kt">number</span>
+        <span class="nx">assembly_id</span>: <span class="kt">number</span>
+        <span class="nx">congressman_id</span>: <span class="kt">number</span>
+        <span class="nx">category</span>: <span class="kt">string</span>
+        <span class="nx">name</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">sub_name</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">type</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">type_name</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">type_subname</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">status</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">question</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">goal</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">major_changes</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">changes_in_law</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">costs_and_revenues</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">deliveries</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">additional_information</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary>minister-sitting <strong>done</strong></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">MinisterSitting</span> <span class="p">{</span>
+        <span class="nx">minister_sitting_id</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="nx">assembly_id</span>: <span class="kt">number</span>
+        <span class="nx">ministry_id</span>: <span class="kt">number</span>
+        <span class="nx">congressman_id</span>: <span class="kt">number</span>
+        <span class="nx">party_id</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">from</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span> <span class="c1">//(&#39;Y-m-d&#39;),</span>
+        <span class="nx">to</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span> <span class="c1">//(&#39;Y-m-d&#39;),</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary>ministry <strong>done</strong></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">Ministry</span> <span class="p">{</span>
+        <span class="nx">ministry_id</span>: <span class="kt">number</span>
+        <span class="nx">name</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">abbr_short</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">abbr_long</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">first</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">last</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary>party <strong>done</strong></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">Party</span> <span class="p">{</span>
+        <span class="nx">party_id</span>: <span class="kt">number</span>
+        <span class="nx">name</span>: <span class="kt">string</span>
+        <span class="nx">abbr_short</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">abbr_long</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">color</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary>plenary-agenda <strong>done</strong></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">PlenaryAgenda</span> <span class="p">{</span>
+        <span class="nx">item_id</span>: <span class="kt">number</span>
+        <span class="nx">plenary_id</span>: <span class="kt">number</span>
+        <span class="nx">issue_id</span>: <span class="kt">number</span>
+        <span class="nx">assembly_id</span>: <span class="kt">number</span>
+        <span class="nx">category</span>: <span class="kt">string</span>
+        <span class="nx">iteration_type</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">iteration_continue</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">iteration_comment</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">comment</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">comment_type</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">posed_id</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">posed</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">answerer_id</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">answerer</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">counter_answerer_id</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">counter_answerer</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">instigator_id</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">instigator</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary>plenary <strong>done</strong></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">Plenary</span> <span class="p">{</span>
+        <span class="nx">plenary_id</span>: <span class="kt">number</span>
+        <span class="nx">assembly_id</span>: <span class="kt">number</span>
+        <span class="nx">from</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span> <span class="c1">//(&#39;Y-m-d H:i&#39;),</span>
+        <span class="nx">to</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span> <span class="c1">//(&#39;Y-m-d H:i&#39;),</span>
+        <span class="nx">name</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary>president <strong>done</strong></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">President</span> <span class="p">{</span>
+        <span class="nx">president_id</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">congressman_id</span>: <span class="kt">number</span>
+        <span class="nx">assembly_id</span>: <span class="kt">number</span>
+        <span class="nx">from</span>: <span class="kt">string</span> <span class="c1">//(&#39;Y-m-d&#39;),</span>
+        <span class="nx">to</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span> <span class="c1">//(&#39;Y-m-d&#39;),</span>
+        <span class="nx">title</span>: <span class="kt">string</span>
+        <span class="nx">abbr</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
+    </pre>
+</details>
+
+<details>
+    <summary>session <strong>done</strong></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">Session</span> <span class="p">{</span>
+        <span class="nx">session_id</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="nx">congressman_id</span>: <span class="kt">number</span>
+        <span class="nx">constituency_id</span>: <span class="kt">number</span>
+        <span class="nx">assembly_id</span>: <span class="kt">number</span>
+        <span class="nx">party_id</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="nx">from</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span> <span class="c1">//(&#39;Y-m-d&#39;),</span>
+        <span class="nx">to</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span> <span class="c1">//(&#39;Y-m-d&#39;),</span>
+        <span class="nx">type</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="nx">abbr</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary><mark>speech</mark></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">Speech</span> <span class="p">{</span>
+        <span class="nx">speech_id</span>: <span class="kt">number</span>
+        <span class="nx">plenary_id</span>: <span class="kt">number</span>
+        <span class="nx">assembly_id</span>: <span class="kt">number</span>
+        <span class="nx">issue_id</span>: <span class="kt">number</span>
+        <span class="nx">category</span>: <span class="kt">string</span>
+        <span class="nx">congressman_id</span>: <span class="kt">number</span>
+        <span class="nx">congressman_type</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">from</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span> <span class="c1">//(&#39;Y-m-d H:i:s&#39;),</span>
+        <span class="nx">to</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span> <span class="c1">//(&#39;Y-m-d H:i:s&#39;),</span>
+        <span class="nx">text</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">type</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">iteration</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">word_count</span>: <span class="kt">number</span>
+        <span class="nx">validated</span>: <span class="kt">boolean</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary><s>super-category</s></summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">SuperCategory</span> <span class="p">{</span>
+        <span class="nx">super_category_id</span>: <span class="kt">number</span>
+        <span class="nx">title</span>: <span class="kt">string</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary>vote-item</summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">VoteItem</span> <span class="p">{</span>
+        <span class="nx">vote_id</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">congressman_id</span>: <span class="kt">number</span>
+        <span class="nx">vote</span>: <span class="kt">string</span>
+        <span class="nx">vote_item_id</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span>
+    <span class="p">}</span>
+    </pre>
+</details>
+
+<details>
+    <summary>vote</summary>
+    <p><code>.add</code> <code>.remove</code> <code>.update</code></p>
+    <pre class="highlight"><span class="kr">interface</span> <span class="nx">Vote</span> <span class="p">{</span>
+        <span class="nx">vote_id</span>: <span class="kt">number</span>
+        <span class="nx">issue_id</span>: <span class="kt">number</span>
+        <span class="nx">category</span>: <span class="kt">string</span>
+        <span class="nx">assembly_id</span>: <span class="kt">number</span>
+        <span class="nx">document_id</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">date</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span> <span class="c1">//(&#39;Y-m-d H:m:s&#39;),</span>
+        <span class="nx">type</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">outcome</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">method</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">yes</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">no</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">inaction</span>: <span class="kt">number</span> <span class="o">|</span> <span class="kc">null</span>
+        <span class="nx">committee_to</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span>
+    <span class="p">}</span>
+    </pre>

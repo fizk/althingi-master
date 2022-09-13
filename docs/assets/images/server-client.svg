@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="552px" height="300px" viewBox="0 0 552 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>Slice</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-Copy-15" stroke="#363535" stroke-width="2" fill="#FFFFFF" x="219" y="102" width="128" height="58"></rect>
+        <rect id="Rectangle" stroke="#363535" stroke-width="2" fill="#FFFFFF" x="235" y="111" width="101" height="39"></rect>
+        <path d="M223,25 L223,66.6044713 L226.192212,63.4136478 L226.191927,67.3069898 L286.384761,67.3076017 L286.383985,118 L309.384,118 L309.384,85.1919235 L305.721231,85.1922036 L307.912435,83 L297,83 L297,25 L425,25 L425,83 L317.085786,83 L319.277998,85.1922116 L315.384,85.1919269 L315.384,118 L318,118 L318,131 L315.777597,131 L319.277985,134.5 L315.384,134.5 L315.384,164.711266 L315.653098,171.692374 L286.384,171.691987 L286.384,214 L328,214 C329.380712,214 330.630712,214.559644 331.535534,215.464466 C332.440356,216.369288 333,217.619288 333,219 L333,219 L333,267 C333,268.380712 332.440356,269.630712 331.535534,270.535534 C330.630712,271.440356 329.380712,272 328,272 L328,272 L239,272 C237.619288,272 236.369288,271.440356 235.464466,270.535534 C234.559644,269.630712 234,268.380712 234,267 L234,267 L234,219 C234,217.619288 234.559644,216.369288 235.464466,215.464466 C236.369288,214.559644 237.619288,214 239,214 L239,214 L280.384,214 L280.384,171.691986 L251.692361,171.692375 L251.691973,157.191932 L247.414378,157.192224 L254.192388,150.414214 L260.970363,157.192188 L257.692,157.191917 L257.692,165.692 L280.384,165.692 L280.384,134.5 L276.721527,134.5 L280.220915,131 L277,131 L277,118 L280.384,118 L280.384,73.307 L226.191924,73.307 L226.192204,76.9701706 L223,73.7775789 L223,83 L95,83 L95,25 L223,25 Z M309.220915,131 L286.777597,131 L290.277985,134.5 L286.384,134.5 L286.384,165.692 L309.384,165.692 L309.384,134.5 L305.721527,134.5 L309.220915,131 Z" id="Combined-Shape" stroke="#363535" stroke-width="2" fill="#FFFFFF"></path>
+        <text id="ProxyPass" font-family="Helvetica-Bold, Helvetica" font-size="6" font-weight="bold" fill="#363535">
+            <tspan x="282" y="126">ProxyPass</tspan>
+        </text>
+        <text id="Apache" transform="translate(229.000000, 130.500000) rotate(-90.000000) translate(-229.000000, -130.500000) " font-family="Helvetica-Bold, Helvetica" font-size="6" font-weight="bold" fill="#363535">
+            <tspan x="218" y="133">Apache</tspan>
+        </text>
+        <text id="Client" transform="translate(210.000000, 115.000000) rotate(-90.000000) translate(-210.000000, -115.000000) " font-family="Helvetica-Bold, Helvetica" font-size="10" font-weight="bold" fill="#363535">
+            <tspan x="196" y="119">Client</tspan>
+        </text>
+        <text id="Server" transform="translate(433.000000, 40.000000) rotate(-90.000000) translate(-433.000000, -40.000000) " font-family="Helvetica-Bold, Helvetica" font-size="10" font-weight="bold" fill="#363535">
+            <tspan x="417" y="44">Server</tspan>
+        </text>
+        <text id="Thumbor" transform="translate(85.000000, 46.000000) rotate(-90.000000) translate(-85.000000, -46.000000) " font-family="Helvetica-Bold, Helvetica" font-size="10" font-weight="bold" fill="#363535">
+            <tspan x="63" y="50">Thumbor</tspan>
+        </text>
+        <text id="html-css-js" font-family="Helvetica-Bold, Helvetica" font-size="4" font-weight="bold" fill="#363535">
+            <tspan x="249.27832" y="133">html</tspan>
+            <tspan x="250.163086" y="138">css</tspan>
+            <tspan x="251.832031" y="143">js</tspan>
+        </text>
+        <circle id="Oval" stroke="#363535" fill="#FFFFFF" cx="324.5" cy="223.5" r="3"></circle>
+        <circle id="Oval-Copy-3" stroke="#363535" fill="#FFFFFF" cx="314.5" cy="223.5" r="3"></circle>
+        <circle id="Oval-Copy-4" stroke="#363535" fill="#FFFFFF" cx="304.5" cy="223.5" r="3"></circle>
+    </g>
+</svg>

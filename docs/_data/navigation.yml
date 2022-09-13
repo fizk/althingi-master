@@ -1,0 +1,52 @@
+
+toc:
+  - title: Development
+    subfolderitems:
+      - page: setup
+        url: /development/setup
+        subsubfolderitems:
+          - page: ports
+            url: /development/ports
+
+      - page: producer
+        url: /development/producer
+
+      - page: messages
+        url: /development/messages
+
+      - page: consumer
+        url: /development/consumer
+
+
+  - title: Systems
+    subfolderitems:
+      - page: client
+        url: /systems/client
+
+      - page: server
+        url: /systems/server
+
+      - page: source
+        url: /systems/source
+        subsubfolderitems:
+          - page: events
+            url: /systems/source/events
+
+      - page: store
+        url: /systems/store
+
+      - page: message store
+        url: /systems/messages-store
+
+      - page: queue
+        url: /systems/queue
+        subsubfolderitems:
+          - page: store queue events
+            url: /systems/store-queue/events
+
+      - page: aggregator
+        url: /systems/aggregator
+
+      - page: logging and monitoring
+        url: /systems/logging-monitoring
+
