@@ -73,7 +73,7 @@ $ docker compose run --rm run <task-name> [parameters]
 
 Where task-name can be
 
-**global**
+**globals**
 : Will collect information which is shared across many Assemblies. It is best to always call this first as other tasks might depend on resources that this task creates.
 
 **assembly** [assembly number]
@@ -151,6 +151,7 @@ When ever the database changes, a Kafka event is is fired off. This might not be
 | name                       | type             | default              | description |
 | -------------------------- | ---------------- | -------------------- | ----------- |
 | ENV_BROKER                 | none/kafka       | kafka                | Sets the name of the Queue that will liten for change events, or `none` if no events should be sent out |
+| BROKER_CONFIG              | string           | -                    | A comma-separated list of debug contexts to enable. generic, broker, topic, metadata, feature, queue, msg, protocol, cgrp, security, fetch, interceptor, plugin, consumer, admin, eos, mock, assignor, conf, all
 
 The Kafka host is hard-coded to `host.docker.internal:9092`, so again, it is expected that Kafka is also accessible through the host's network (aka localhost).
 
@@ -191,6 +192,11 @@ Lastly, all the source-code directories are monted into the container for develo
     </figcaption>
 </figure>
 
+If you are not interested in sending messages to Kafka, while in development, you can pass a `none` value when starting up the `run` service like this
+
+```sh
+$ ENV_BROKER=none docker compose up -d run
+```
 
 ### Test
 Test is the service that is run by the build-agent in the CI/CD pipeline, so it's configured to run in isolation. It doesn't depend on Kafka and it has its own instance of a database where that database can be truncated and rebuilt with out it affecting the `run` database.

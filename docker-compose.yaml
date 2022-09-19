@@ -155,7 +155,7 @@ services:
         container_name: althingi-messages-store
         image: einarvalur/althingi-messages-store:latest
         labels:
-            - althingi_service=messages
+            - althingi_service=messages-source
         environment:
             - QUEUE_HOST=kafka
             - QUEUE_PORT=9092
@@ -355,10 +355,14 @@ services:
             - MYSQL_HOST=source-db
             - MYSQL_USER=root
             - MYSQL_PASSWORD=example
-            - RABBITMQ_USER=admin
-            - RABBITMQ_PASSWORD=Admin@123
+            - MONGODB_HOST=store-db
             - MONGODB_USER=root
             - MONGODB_PASSWORD=example
+            - MONGODB_PORT=27017
+            - KAFKA_HOST=kafka
+            - KAFKA_PORT=9092
+            - CLIENT_HOST=client
+            - CLIENT_PORT=80
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
         logging:
